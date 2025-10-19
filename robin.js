@@ -48,6 +48,32 @@ function advanceDialogue() {
     if (line.scene) {
       sceneImg.src = line.scene;
     }
-    
+     
+    if (line.robin !== undefined) {
+      if (line.robin === "") {
+        spriteRobin.style.display = "none";
+      } else {
+        spriteRobin.style.display = "none";
+        spriteRobin.src = line.robin;
+      }
+    } else {
+      spriteRobin.style.display = "none";
+    }
+  } else {
+    if (sceneCallback) sceneCallback();
+    }
   }
-}
+
+  function showChoices(options) {
+    choicesDiv.innerHTML = "";
+    options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = opt.text;
+      btn.onclick = () => {
+        opt.action();
+        choicesDiv.innerHTML = "";
+      };
+      choicesDiv.appendChild(btn);
+    });
+  }
