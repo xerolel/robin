@@ -19,5 +19,35 @@ const imageFiles = ["concert_1.png", "concert_2.png", "concert_3.png",
 
 const images = {};
 imageFiles.forEach(file => {
-  images[file]
+  images[file] = new Image();
+  images[file].src = file;
+});
+
+// pkay button 
+playButton.addEventListener("click", () => {
+  playButton.style.display = "none";
 })
+
+let currentLine = 0;
+let dialogueLines = [];
+let sceneCallback = null;
+
+function advanceDialogue() {
+  currentLine++;
+  if (currentLine < dialogueLines.length) {
+    const line = dialogueLines[currentLine];
+    dialogueText.innerHTML = line.text;
+
+    if (line.background !== undefined) {
+      background.src = line.background;
+      background.style.display = "block";
+    } else {
+      background.style.display = "none";
+    }
+
+    if (line.scene) {
+      sceneImg.src = line.scene;
+    }
+    
+  }
+}
