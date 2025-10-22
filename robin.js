@@ -167,3 +167,59 @@ function advanceDialogue() {
   sceneCallback = afterSewingTransition;
   dialogueBox.onclick = advanceDialogue;
 }
+
+function PhoneCallScene() {
+
+    spriteRobin.style.display = "none";
+    spriteRobin.src = "";
+    sceneImg.src = "";
+    background.style.display = "none";
+    background.src = "";
+
+  dialogueLines=[
+    {text:"A couple of days passed after that conversation with Robin. You two had become closer, and you were starting to feel more comfortable around her and yourself."},
+    {text:"And after one of my clients introduced me to your music, I became a big fan."},
+    {text:"She laughed, dragging the eyeliner pencil across her eyelid."},
+    {text:"Seriously... and I don't even listen to music that much."},
+    {text:"I feel like, really special hearing that, she said."},
+    {text:"It's really cool how you do your makeup yourself. I thought all idols had makeup artists."},
+    {text:"She smiles, rubbing the eyeshadow across her lids. I like the idea of doing it myself. It makes me feel more connected to my performances."},
+    {text:"Plus, she says with a wink, I get to test my creativity and artistic skills."},
+    {text:"If I'm going to be honest, you say, you're so creative."},
+    {text:"A few hours before your performance starts, and you're doing everything by yourself."},
+    {text:"She looks at the camera, applying her lipstick. Thank you, you're always so sweet."}
+  ];
+}
+
+
+// concert
+function startConcert(){
+
+    spriteRobin.style.display = "none";
+    spriteRobin.src = "";
+    sceneImg.src = "";
+    background.style.display = "none";
+    background.src = "";
+    
+  dialogueLines=[
+    {text:"It was like a dream come true. You were in the front row, watching her perform live."},
+    {text: "she was radiant, her voice powerful and clear, every note hitting perfectly."},
+    {text: "and in a flash, she brought you on stage."},
+    {text: "!"},
+    {text: "You were on stage, heart pounding. She smiled at the audience."},
+    {text: "This is my costume dessigner. Everyone, give her a big round of applause!"},
+
+    // after concert
+
+    {text:"Afterwards, you and Robin went out for dinner to celebrate, shopping luxurious clothes and accessories, then headed back to her place."},
+    {text:"You had such a great time, and then you found yourself watching the stars with her."},
+    {text:"That was... amazing, you say, looking up at the sky. I've never had so much fun before."},
+    {text:"Agreed, she smiles."},
+    // add some more dialogue here
+    {text:"If I ever disappear from the stage, promise you’ll still hum my song sometimes."},
+  ];
+  currentLine=0;
+  dialogueText.innerHTML = dialogueLines[currentLine].text;
+  sceneCallback=null;
+  dialogueBox.onclick=advanceDialogue;
+}
