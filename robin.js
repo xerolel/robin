@@ -6,31 +6,18 @@ const sceneImg = document.getElementById("scene-img");
 const spriteRobin = document.getElementById("sprite-robin");
 const background = document.getElementById("background");
 
-const imageFiles = ["concert_1.png", "concert_2.png", "concert_3.png",
-  "concert_4.png", "concert_5.png", "concert_8.png", "concert1.png", 
-  "concert2.png", "dressing.png", "concerned.png", "eyeliner.png", "eyeliner2.png",
-  "eyeliner3.png", "eyeliner4.png", "eyeliner5.png", "eyeliner6.png", 
-  "hallway_sprite.png", "hallway.png", "concert3.png", "concert4.png",
-  "liptsick.png", "night.png", "pigtail_1.png", "pigtail_2.png",
-  "pigtail_3.png", "pigtail_4.png", "pigtail_5.png", "pigtail_6.png",
-  "pigtail_7.png", "pigtail_8.png", "sewing1.png", "sewing2.png",
-  "sewing3.png", "stars.png", "stars2.png", "black.png"
-];
-
-const images = {};
-imageFiles.forEach(file => {
-  images[file] = new Image();
-  images[file].src = file;
-});
-
-// pkay button 
-playButton.addEventListener("click", () => {
-  playButton.style.display = "none";
-})
-
 let currentLine = 0;
 let dialogueLines = [];
 let sceneCallback = null;
+
+function fadeTo(src) {
+  background.style.opacity = 0;
+  setTimeout(() => {
+    background.src = src;
+    background.style.opacity = 1;
+  }, 400);
+}
+
 
 function advanceDialogue() {
   currentLine++;
@@ -38,76 +25,55 @@ function advanceDialogue() {
     const line = dialogueLines[currentLine];
     dialogueText.innerHTML = line.text;
 
-    if (line.background !== undefined) {
-      background.src = line.background;
-      background.style.display = "block";
-    } else {
-      background.style.display = "none";
-    }
+    if (line.background) fadeTo(line.background);
 
-    if (line.scene) {
-      sceneImg.src = line.scene;
-    }
-     
-    if (line.robin !== undefined) {
-      if (line.robin === "") {
-        spriteRobin.style.display = "none";
-      } else {
-        spriteRobin.style.display = "none";
-        spriteRobin.src = line.robin;
-      }
-    } else {
-      spriteRobin.style.display = "none";
-    }
+    if (line.Robin) {
+      spriteRobin.src = line.Robin;
+      spriteRobin.style.display = "block";
+    } else spriteRobin.style.display = "none";
+
   } else {
     if (sceneCallback) sceneCallback();
-    }
   }
+}
 
-  function showChoices(options) {
-    choicesDiv.innerHTML = "";
-    options.forEach(opt => {
-      const btn = document.createElement("button");
-      btn.className = "choice-btn";
-      btn.textContent = opt.text;
-      btn.onclick = () => {
-        opt.action();
-        choicesDiv.innerHTML = "";
-      };
-      choicesDiv.appendChild(btn);
-    });
-  }
+function showChoices(options) {
+  choicesDiv.innerHTML = "";
+  options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = opt.text;
+    btn.onclick = () => {
+      opt.action();
+      choicesDiv.innerHTML = "";
+    };
+    choicesDiv.appendChild(btn);
+  });
+}
 
-  function startIntro() {
-    spriteRobin.style.display = "none";
-    spriteRobin.src = "";
-    sceneImg.src = "";
-    background.style.display = "none";
-    background.src = "";
 
-    dialogueBox.style.display = "block";
-
-    dialogueLine = [
-    {text:"*huff, huff, huff*"},
-    {text:"You're panting, finally reaching the dressing room, costume tight in your hands."},
-    {text:"Being a costume designer is exhausting. Every stitch has to be perfect, every fold precise."},
-    {text:"You're nervous, but excited. This is the first time you've worked with an idol. A very famous one, nontheless. You were proud of yourself."},
-    {text:"You tell yourself to stay calm, straighten up, and reach for the door."},
-    {text:"But fate, as always, had other plans."},
-    {text:"You bumped into someone."},
-    {text:"You: Ow!, you yelp, falling straight on the tile."},
-    {text:"scene: black.png"},
+function startIntro() {
+  dialogueLines = [
+    {text:"*huff, huff, huff*", background: "black.png"},
+    {text:"You're panting, finally reaching the dressing room, costume tight in your hands", background: "black.png"},
+    {text:"Being a costume designer is exhausting. Every stitch has to be perfect, every fold precise.", background: "black.png"},
+    {text:"You're nervous, but excited. This is the first time you've worked with an idol. A very famous one, nontheless. You were proud of yourself.", background: "black.png"},
+    {text:"You tell yourself to stay calm, straighten up, and reach for the door.", background: "black.png"},
+    {text:"But fate, as always, had other plans.", background: "black.png"},
+    {text:"You bumped into someone.", background: "black.png"},
+    {text:"You: Ow!, you yelp, falling straight on the tile.", background: "black.png"},
+    {text: "...", background: "black.png"},
     {text:"A soft voice gasps."},
-    {text:"Oh no! I'm so sorry!"},
-    {text:"You blink up to see a radiant girl with a concerned look."},
-    {text:"You force a polite smile out of professionalism, brushing off your embarrasment. No, no, it's my fault. I wasn't looking where I was going..."},
-    {text:"But then you see her face. The pink hair. The dazzling eyes. The very same girl from every billboard you've seen."},
-    {text:"Wait... Miss Robin?! Like, the Robin?! Oh my gosh, I love your music!"},
-    {text:"She laughs softly, her voice melodic even off stage, and offers her hand."},
+    {text:"Oh no! I'm so sorry!", background: "black.png"},
+    {text:"You blink up to see a radiant girl with a concerned look.", Robin: "concerned.png", background: "hallway.png"},
+    {text:"You force a polite smile out of professionalism, brushing off your embarrasment. No, no, it's my fault. I wasn't looking where I was going...", Robin: "concerned.png"},
+    {text:"But then you see her face. The pink hair. The dazzling eyes. The very same girl from every billboard you've seen.", background: "black.png"},
+    {text:"Wait... Miss Robin?! Like, the Robin?! Oh my gosh, I love your music!", Robin: "concerned.png", background: "hallway.png"},
+    {text:"She laughs softly, her voice melodic even off stage, and offers her hand.", background: "hallway.png"},
     {text:"You're as red as a tomato now. You take her hand, cheeks burning."},
-    {text:"See? It's alright. No harm done."},
-    {text:"Then she glances at the floor. Oh wait, what's this fabric?"},
-    {text:"You freeze. The costume. Torn from the fall."},
+    {text:"See? It's alright. No harm done.", Robin: "pigtail_5", background: "hallway_sprite.png"},
+    {text:"Then she glances at the floor.", Robin: "pigtail_2", background: "hallway_sprite.png"},
+    {text:"You freeze. The costume. Torn from the fall.", Robin: "pigtail_2", background: "hallway_sprite.png"},
     {text:"Um... oh my gosh. This was for you. I think it got ruined when it fell. Um... I... you stammer, looking down at the torn fabric."},
     {text:"You felt your face heat up, your heart pounding. How did you mess up on your first meet that badly?"},
     {text:"Hey, it's okay. Accidents happen, she says, smiling reassuringly. The concert is in a few days, right? Is that plenty of time for you?"},
@@ -116,22 +82,16 @@ function advanceDialogue() {
     {text:"You freeze. You... you sew?"},
     {text:"Sometimes, she giggles, Come on, before I change my mind."},
     {text:"And somehow, you end up following a pop star down the hallway, your heart pouding like a drum."}
-    ];
+  ];
+  currentLine = 0;
+  dialogueText.innerHTML = dialogueLines[currentLine].text;
+  sceneCallback = startSewingScene;
+  dialogueBox.onclick = advanceDialogue;
+}
 
-    currentLine = 0;
-    dialogueText.innerHTML = dialogyeLines[currentLine].text;
-    sceneCallback = startClassTime;
-    dialogueBox.onclick = advanceDialogue;
-  }
 
-  function startSewingScene() {
-    spriteRobin.style.display = "none";
-    spriteRobin.src = "";
-    sceneImg.src = "";
-    background.style.display = "none";
-    background.src = "";
-
-    dialogueLines=[
+function startSewingScene() {
+  dialogueLines = [
     {text:"As you placed the fabric down, ready to start fixing it, you take a deep breath, trying to calm your nerves."},
     {text:"Robin watches intently, her chin resting in her palms, eyes sparkling with curiosity."},
     {text:"Okay... I'll get started now... you say, fumbling with the needle, you can sit right here if you want to get a better look, you say, gesturing to the chair right next to you."},
@@ -158,57 +118,23 @@ function advanceDialogue() {
     {text:"You feel your face heat up again, looking down at your hands."},
     {text:"Seriously...? I try not to be like myself when I'm working. I don't want to mess things up, especially when I hardly show myself."},
     {text:"It's difficult when you never make public appearances, and then just show up. I get really nervous, and always want to put on an act."},
-    {text:"Then maybe, she says, voice gentle, we're not so different after all."},
+    {text:"Then maybe, she says, voice gentle, we're not so different after all."}
   ];
-
-
   currentLine = 0;
   dialogueText.innerHTML = dialogueLines[currentLine].text;
-  sceneCallback = afterSewingTransition;
+  sceneCallback = startConcert;
   dialogueBox.onclick = advanceDialogue;
 }
 
-function PhoneCallScene() {
 
-    spriteRobin.style.display = "none";
-    spriteRobin.src = "";
-    sceneImg.src = "";
-    background.style.display = "none";
-    background.src = "";
-
-  dialogueLines=[
-    {text:"A couple of days passed after that conversation with Robin. You two had become closer, and you were starting to feel more comfortable around her and yourself."},
-    {text:"And after one of my clients introduced me to your music, I became a big fan."},
-    {text:"She laughed, dragging the eyeliner pencil across her eyelid."},
-    {text:"Seriously... and I don't even listen to music that much."},
-    {text:"I feel like, really special hearing that, she said."},
-    {text:"It's really cool how you do your makeup yourself. I thought all idols had makeup artists."},
-    {text:"She smiles, rubbing the eyeshadow across her lids. I like the idea of doing it myself. It makes me feel more connected to my performances."},
-    {text:"Plus, she says with a wink, I get to test my creativity and artistic skills."},
-    {text:"If I'm going to be honest, you say, you're so creative."},
-    {text:"A few hours before your performance starts, and you're doing everything by yourself."},
-    {text:"She looks at the camera, applying her lipstick. Thank you, you're always so sweet."}
-  ];
-}
-
-
-// concert
-function startConcert(){
-
-    spriteRobin.style.display = "none";
-    spriteRobin.src = "";
-    sceneImg.src = "";
-    background.style.display = "none";
-    background.src = "";
-    
-  dialogueLines=[
-    {text:"It was like a dream come true. You were in the front row, watching her perform live."},
+function startConcert() {
+  dialogueLines = [
+ {text:"It was like a dream come true. You were in the front row, watching her perform live."},
     {text: "she was radiant, her voice powerful and clear, every note hitting perfectly."},
     {text: "and in a flash, she brought you on stage."},
     {text: "!"},
     {text: "You were on stage, heart pounding. She smiled at the audience."},
     {text: "This is my costume dessigner. Everyone, give her a big round of applause!"},
-
     // after concert
 
     {text:"Afterwards, you and Robin went out for dinner to celebrate, shopping luxurious clothes and accessories, then headed back to her place."},
@@ -218,8 +144,14 @@ function startConcert(){
     // add some more dialogue here
     {text:"If I ever disappear from the stage, promise you’ll still hum my song sometimes."},
   ];
-  currentLine=0;
+  currentLine = 0;
   dialogueText.innerHTML = dialogueLines[currentLine].text;
-  sceneCallback=null;
-  dialogueBox.onclick=advanceDialogue;
+  sceneCallback = null;
+  dialogueBox.onclick = advanceDialogue;
 }
+
+// start button
+playButton.addEventListener("click", () => {
+  playButton.style.display = "none";
+  startIntro();
+});

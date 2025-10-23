@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Robin’s Visual Novel</title>
+  <title>ROBIN 🌸</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="game-container">
-    <h1>Robin’s Story</h1>
-    <button id="start-btn">Start Game</button>
+    <img id="background" src="black.png" alt="background">
+    <img id="sprite-robin" src="" alt="Robin sprite" style="display:none;">
+    <img id="scene-img" src="" alt="scene" style="display:none;">
+
+    <div id="dialogue-box">
+      <p id="dialogue-text"></p>
+      <div id="choices"></div>
+    </div>
+
+    <button id="play-button">Start Game</button>
   </div>
 
   <script src="robin.js"></script>
